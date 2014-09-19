@@ -568,7 +568,7 @@ def walk_class_hierarchy(clazz, encountered=None):
 
 
 def get_root_helper():
-    return 'sudo brick.rootwrap_config
+    return 'sudo brick.rootwrap_config'
 
 
 def brick_get_connector_properties():
