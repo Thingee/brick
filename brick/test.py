@@ -24,7 +24,6 @@ inline callbacks.
 import logging
 import os
 import tempfile
-import uuid
 
 import fixtures
 import mock
@@ -39,9 +38,7 @@ from brick.common import config  # noqa Need to register global_opts
 from brick.openstack.common import log as oslo_logging
 from brick.openstack.common import strutils
 from brick.openstack.common import timeutils
-from brick import service
 from brick.tests import conf_fixture
-from brick.tests import fake_notifier
 
 test_opts = [
     cfg.StrOpt('sqlite_clean_db',
@@ -120,9 +117,6 @@ class TestCase(testtools.TestCase):
         self.addCleanup(self.mox.VerifyAll)
         self.addCleanup(self._common_cleanup)
         self.injected = []
-        self._services = []
-
-        fake_notifier.stub_notifier(self.stubs)
 
         CONF.set_override('fatal_exception_format_errors', True)
         # This will be cleaned up by the NestedTempfile fixture
@@ -147,13 +141,6 @@ class TestCase(testtools.TestCase):
             except AssertionError:
                 pass
 
-        # Kill any services
-        for x in self._services:
-            try:
-                x.kill()
-            except Exception:
-                pass
-
         # Delete attributes that don't start with _ so they don't pin
         # memory around unnecessarily for the duration of the test
         # suite
@@ -169,15 +156,6 @@ class TestCase(testtools.TestCase):
         """Set logging level to the specified value."""
         log_root = logging.getLogger(None).logger
         log_root.setLevel(level)
-
-    def start_service(self, name, host=None, **kwargs):
-        host = host and host or uuid.uuid4().hex
-        kwargs.setdefault('host', host)
-        kwargs.setdefault('binary', 'cinder-%s' % name)
-        svc = service.Service.create(**kwargs)
-        svc.start()
-        self._services.append(svc)
-        return svc
 
     def mock_object(self, obj, attr_name, new_attr=None, **kwargs):
         """Use python mock to mock an object attribute
