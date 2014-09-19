@@ -50,7 +50,7 @@ LOG = logging.getLogger(__name__)
 ISO_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 PERFECT_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
 
-synchronized = lockutils.synchronized_with_prefix('cinder-')
+synchronized = lockutils.synchronized_with_prefix('brick-')
 
 
 def find_config(config_path):
@@ -183,7 +183,7 @@ def create_channel(client, width, height):
 
 def brickdir():
     import brick
-    return os.path.abspath(cinder.__file__).split('brick/__init__.py')[0]
+    return os.path.abspath(brick.__file__).split('brick/__init__.py')[0]
 
 
 def last_completed_audit_period(unit=None):
@@ -419,11 +419,11 @@ def monkey_patch():
     You can set decorators for each modules
     using CONF.monkey_patch_modules.
     The format is "Module path:Decorator function".
-    Example: 'cinder.api.ec2.cloud:' \
-     cinder.openstack.common.notifier.api.notify_decorator'
+    Example: 'brick.api.ec2.cloud:' \
+     brick.openstack.common.notifier.api.notify_decorator'
 
     Parameters of the decorator is as follows.
-    (See cinder.openstack.common.notifier.api.notify_decorator)
+    (See brick.openstack.common.notifier.api.notify_decorator)
 
     name - name of the function
     function - object of the function
@@ -568,12 +568,12 @@ def walk_class_hierarchy(clazz, encountered=None):
 
 
 def get_root_helper():
-    return 'sudo cinder-rootwrap %s' % CONF.rootwrap_config
+    return 'sudo brick.rootwrap_config
 
 
 def brick_get_connector_properties():
     """wrapper for the brick calls to automatically set
-    the root_helper needed for cinder.
+    the root_helper needed for brick.
     """
 
     root_helper = get_root_helper()
