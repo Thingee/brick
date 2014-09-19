@@ -19,15 +19,15 @@ import time
 
 from brick import exception
 from brick import executor
+from brick.i18n import _
 from brick.initiator import host_driver
 from brick.initiator import linuxfc
 from brick.initiator import linuxscsi
-from brick.remotefs import remotefs
-from brick.i18n import _
 from brick.openstack.common import lockutils
 from brick.openstack.common import log as logging
 from brick.openstack.common import loopingcall
 from brick.openstack.common import processutils as putils
+from brick.remotefs import remotefs
 
 LOG = logging.getLogger(__name__)
 

@@ -35,9 +35,9 @@ from xml.sax import saxutils
 from oslo.config import cfg
 import six
 
-from brick.initiator import connector
 from brick import exception
 from brick.i18n import _
+from brick.initiator import connector
 from brick.openstack.common import importutils
 from brick.openstack.common import lockutils
 from brick.openstack.common import log as logging

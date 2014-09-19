@@ -23,7 +23,6 @@ inline callbacks.
 
 import logging
 import os
-import shutil
 import tempfile
 import uuid
 

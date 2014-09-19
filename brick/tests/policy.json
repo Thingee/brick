@@ -1,0 +1,14 @@
+{
+    "context_is_admin": "role:admin",
+    "admin_api": "is_admin:True",
+    "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
+
+    "volume:create": "",
+    "volume:get": "rule:admin_or_owner",
+    "volume:get_all": "",
+    "volume:delete": "",
+    "volume:update": "",
+    "volume:attach": "",
+    "volume:detach": "",
+    "volume:extend": "",
+}

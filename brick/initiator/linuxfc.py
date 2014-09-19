@@ -16,8 +16,8 @@
 
 import errno
 
-from brick.initiator import linuxscsi
 from brick.i18n import _
+from brick.initiator import linuxscsi
 from brick.openstack.common import log as logging
 from brick.openstack.common import processutils as putils
 
