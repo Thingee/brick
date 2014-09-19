@@ -25,8 +25,6 @@ CONF.import_opt('policy_file', 'brick.policy')
 
 
 def set_defaults(conf):
-    conf.set_default('iscsi_helper', 'fake')
-    conf.set_default('iscsi_num_targets', 8)
     conf.set_default('policy_file', 'brick/tests/policy.json')
     conf.set_default('state_path', os.path.abspath(
         os.path.join(os.path.dirname(__file__), '..', '..')))

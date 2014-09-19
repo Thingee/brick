@@ -39,14 +39,9 @@ from brick.openstack.common import log as oslo_logging
 from brick.openstack.common import strutils
 from brick.openstack.common import timeutils
 from brick.tests import conf_fixture
-
-test_opts = [
-    cfg.StrOpt('sqlite_clean_db',
-               default='clean.sqlite',
-               help='File name of clean sqlite db'), ]
+from brick import utils
 
 CONF = cfg.CONF
-CONF.register_opts(test_opts)
 
 LOG = oslo_logging.getLogger(__name__)
 
@@ -129,7 +124,7 @@ class TestCase(testtools.TestCase):
                                       '..',
                                   )
                               ),
-                              'cinder/tests/policy.json'))
+                              'brick/tests/policy.json'))
 
     def _common_cleanup(self):
         """Runs after each test method to tear down test environment."""
