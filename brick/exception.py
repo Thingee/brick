@@ -104,6 +104,10 @@ class InvalidParameterValue(Invalid):
     message = _("%(err)s")
 
 
+class PasteAppNotFound(NotFound):
+    message = _("Could not load paste app '%(name)s' from %(path)s")
+
+
 class NoFibreChannelHostsFound(BrickException):
     message = _("We are unable to locate any Fibre Channel devices.")
 
