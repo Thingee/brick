@@ -79,6 +79,14 @@ global_opts = [
     cfg.BoolOpt('api_rate_limit',
                 default=True,
                 help='Enables or disables rate limit of the API.'),
+    cfg.ListOpt('osapi_volume_ext_list',
+                default=[],
+                help='Specify list of extensions to load when using osapi_'
+                     'volume_extension option with brick.api.contrib.'
+                     'select_extensions'),
+    cfg.MultiStrOpt('osapi_volume_extension',
+                    default=['brick.api.contrib.standard_extensions'],
+                    help='osapi volume extension to load'),
     cfg.StrOpt('host',
                default=socket.gethostname(),
                help='Name of this node.  This can be an opaque identifier. '

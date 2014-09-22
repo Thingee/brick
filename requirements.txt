@@ -10,7 +10,6 @@ eventlet>=0.15.1
 greenlet>=0.3.2
 iso8601>=0.1.9
 keystonemiddleware>=1.0.0
-kombu>=2.4.8
 lxml>=2.3
 netaddr>=0.7.12
 oslo.config>=1.4.0.0a3

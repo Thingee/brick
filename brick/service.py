@@ -45,13 +45,13 @@ service_opts = [
                help='Range, in seconds, to randomly delay when starting the'
                     ' periodic task scheduler to reduce stampeding.'
                     ' (Disable by setting to 0)'),
-    cfg.StrOpt('osapi_volume_listen',
+    cfg.StrOpt('osapi_brick_listen',
                default="0.0.0.0",
                help='IP address on which OpenStack Volume API listens'),
-    cfg.IntOpt('osapi_volume_listen_port',
-               default=8776,
+    cfg.IntOpt('osapi_brick_listen_port',
+               default=8796,
                help='Port on which OpenStack Volume API listens'),
-    cfg.IntOpt('osapi_volume_workers',
+    cfg.IntOpt('osapi_brick_workers',
                help='Number of workers for OpenStack Volume API service. '
                     'The default is equal to the number of CPUs available.'), ]
 

@@ -64,18 +64,67 @@ class ProjectMapper(APIMapper):
 
 class APIRouter(base_wsgi.Router):
     """Routes requests on the API to the appropriate controller and method."""
+    ExtensionManager = None  # override in subclasses
 
     @classmethod
     def factory(cls, global_config, **local_config):
-        """Simple paste factory, :class:`brick.wsgi.Router` doesn't have."""
+        """Simple paste factory, :class:`brick doesn't have."""
         return cls()
 
     def __init__(self, ext_mgr=None):
+        if ext_mgr is None:
+            if self.ExtensionManager:
+                ext_mgr = self.ExtensionManager()
+            else:
+                raise Exception(_("Must specify an ExtensionManager class"))
 
         mapper = ProjectMapper()
         self.resources = {}
         self._setup_routes(mapper, ext_mgr)
+        self._setup_ext_routes(mapper, ext_mgr)
+        self._setup_extensions(ext_mgr)
         super(APIRouter, self).__init__(mapper)
+
+    def _setup_ext_routes(self, mapper, ext_mgr):
+        for resource in ext_mgr.get_resources():
+            LOG.debug('Extended resource: %s',
+                      resource.collection)
+
+            wsgi_resource = wsgi.Resource(resource.controller)
+            self.resources[resource.collection] = wsgi_resource
+            kargs = dict(
+                controller=wsgi_resource,
+                collection=resource.collection_actions,
+                member=resource.member_actions)
+
+            if resource.parent:
+                kargs['parent_resource'] = resource.parent
+
+            mapper.resource(resource.collection, resource.collection, **kargs)
+
+            if resource.custom_routes_fn:
+                resource.custom_routes_fn(mapper, wsgi_resource)
+
+    def _setup_extensions(self, ext_mgr):
+        for extension in ext_mgr.get_controller_extensions():
+            collection = extension.collection
+            controller = extension.controller
+
+            if collection not in self.resources:
+                LOG.warning(_('Extension %(ext_name)s: Cannot extend '
+                              'resource %(collection)s: No such resource'),
+                            {'ext_name': extension.extension.name,
+                             'collection': collection})
+                continue
+
+            LOG.debug('Extension %(ext_name)s extending resource: '
+                      '%(collection)s',
+                      {'ext_name': extension.extension.name,
+                       'collection': collection})
+
+            resource = self.resources[collection]
+            resource.register_actions(controller)
+            resource.register_extensions(controller)
 
     def _setup_routes(self, mapper, ext_mgr):
         raise NotImplementedError
@@ -84,8 +133,8 @@ class APIRouter(base_wsgi.Router):
 class FaultWrapper(base_wsgi.Middleware):
 
     def __init__(self, application):
-        LOG.warn(_('brick.api.openstack:FaultWrapper is deprecated. Please '
-                   'use brick.api.middleware.fault:FaultWrapper instead.'))
+        LOG.warn(_('brick is deprecated. Please '
+                   'use brick instead.'))
         # Avoid circular imports from here. Can I just remove this class?
         from brick.api.middleware import fault
         super(FaultWrapper, self).__init__(fault.FaultWrapper(application))

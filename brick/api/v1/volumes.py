@@ -27,16 +27,16 @@ LOG = logging.getLogger(__name__)
 class VolumeController(wsgi.Controller):
     """The Volumes API controller for the OpenStack API."""
 
-    def __init__(self, ext_mgr):
+    def __init__(self):
         self.manager = manager.VolumeManager()
-        self.ext_mgr = ext_mgr
         super(VolumeController, self).__init__()
 
     def get_connector(self):
-        connector = self.manager.get_connector()
         LOG.info(_("API get_Connector called"))
+        connector = self.manager.get_connector()
+        LOG.debug("Connector: %s" % connector)
         return {"connector": connector}
 
 
-def create_resource(ext_mgr):
-    return wsgi.Resource(VolumeController(ext_mgr))
+def create_resource():
+    return wsgi.Resource(VolumeController())

@@ -19,6 +19,7 @@
 WSGI middleware for OpenStack Volume API.
 """
 
+from brick.api import extensions
 import brick.api.openstack
 from brick.api.v1 import limits
 from brick.api.v1 import volumes
@@ -31,6 +32,7 @@ LOG = logging.getLogger(__name__)
 
 class APIRouter(brick.api.openstack.APIRouter):
     """Routes requests on the API to the appropriate controller and method."""
+    ExtensionManager = extensions.ExtensionManager
 
     def _setup_routes(self, mapper, ext_mgr):
         self.resources['versions'] = versions.create_resource()
@@ -40,7 +42,7 @@ class APIRouter(brick.api.openstack.APIRouter):
 
         mapper.redirect("", "/")
 
-        self.resources['volumes'] = volumes.create_resource(ext_mgr)
+        self.resources['volumes'] = volumes.create_resource()
         mapper.resource("volume", "volumes",
                         controller=self.resources['volumes'],
                         collection={'detail': 'GET'},

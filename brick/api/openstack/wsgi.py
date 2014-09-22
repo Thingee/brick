@@ -133,7 +133,7 @@ class Request(webob.Request):
 
     def best_match_content_type(self):
         """Determine the requested response content-type."""
-        if 'cinder.best_content_type' not in self.environ:
+        if 'brick.best_content_type' not in self.environ:
             # Calculate the best MIME type
             content_type = None
 
@@ -147,10 +147,10 @@ class Request(webob.Request):
             if not content_type:
                 content_type = self.accept.best_match(SUPPORTED_CONTENT_TYPES)
 
-            self.environ['cinder.best_content_type'] = (content_type or
-                                                        'application/json')
+            self.environ['brick.best_content_type'] = (content_type or
+                                                       'application/json')
 
-        return self.environ['cinder.best_content_type']
+        return self.environ['brick.best_content_type']
 
     def get_content_type(self):
         """Determine content type of the request body.
@@ -733,8 +733,9 @@ class Resource(wsgi.Application):
 
     def register_actions(self, controller):
         """Registers controller actions with this resource."""
-
+        LOG.debug("controller = %s" % controller)
         actions = getattr(controller, 'wsgi_actions', {})
+        LOG.debug("XXX ACTIONS = %s" % actions)
         for key, method_name in actions.items():
             self.wsgi_actions[key] = getattr(controller, method_name)
 
@@ -929,7 +930,7 @@ class Resource(wsgi.Application):
         action_args.update(contents)
 
         project_id = action_args.pop("project_id", None)
-        context = request.environ.get('cinder.context')
+        context = request.environ.get('brick.context')
         if (context and project_id and (project_id != context.project_id)):
             msg = _("Malformed request url")
             return Fault(webob.exc.HTTPBadRequest(explanation=msg))
@@ -987,7 +988,7 @@ class Resource(wsgi.Application):
 
     def get_method(self, request, action, content_type, body):
         """Look up the action-specific method and its extensions."""
-
+        LOG.debug("GET called %s" % action)
         # Look up the method
         try:
             if not self.controller:
@@ -1016,7 +1017,7 @@ class Resource(wsgi.Application):
 
     def dispatch(self, method, request, action_args):
         """Dispatch a call to the action-specific method."""
-
+        LOG.debug("Dispatch request %s" % request)
         return method(req=request, **action_args)
 
 
@@ -1187,7 +1188,7 @@ class Fault(webob.exc.HTTPException):
 
 
 def _set_request_id_header(req, headers):
-    context = req.environ.get('cinder.context')
+    context = req.environ.get('brick.context')
     if context:
         headers['x-compute-request-id'] = context.request_id
 
