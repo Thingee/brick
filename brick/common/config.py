@@ -97,9 +97,9 @@ global_opts = [
                default=60,
                help='Maximum time since last check-in for a service to be '
                     'considered up'),
-    cfg.StrOpt('brick_api_class',
+    cfg.StrOpt('volume_api_class',
                default='brick.volume.api.API',
-               help='The full class name of the brick volume API class to use'),
+               help='The full class name of the volume API class to use'),
     cfg.StrOpt('auth_strategy',
                default='noauth',
                help='The strategy to use for auth. Supports noauth, keystone, '
