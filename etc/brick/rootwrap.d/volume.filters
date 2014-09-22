@@ -1,0 +1,42 @@
+# cinder-rootwrap command filters for volume nodes
+# This file should be owned by (and only-writeable by) the root user
+
+[Filters]
+# brick/iscsi/iscsi.py: iscsi_helper '--op' ...
+ietadm: CommandFilter, ietadm, root
+tgtadm: CommandFilter, tgtadm, root
+tgt-admin: CommandFilter, tgt-admin, root
+brick-rtstool: CommandFilter, brick-rtstool, root
+
+# brick/local_dev/lvm.py: 'lvrename', '%(vg)s', '%(orig)s' '(new)s'...
+lvcreate: CommandFilter, lvcreate, root
+lvrename: CommandFilter, lvrename, root
+lvextend: CommandFilter, lvextend, root
+lvchange: CommandFilter, lvchange, root
+lvremove: CommandFilter, lvremove, root
+pvs: EnvFilter, env, root, LC_ALL=C, pvs
+vgs: EnvFilter, env, root, LC_ALL=C, vgs
+lvs: EnvFilter, env, root, LC_ALL=C, lvs
+lvdisplay: EnvFilter, env, root, LC_ALL=C, lvdisplay
+udevadm: CommandFilter, udevadm, root
+
+# brick/initiator/connector: 'iscsiadm', '-m', 'node', '-T', ...
+dd: CommandFilter, dd, root
+iscsiadm: CommandFilter, iscsiadm, root
+ls: CommandFilter, ls, root
+tee: CommandFilter, tee, root
+multipath: CommandFilter, multipath, root
+systool: CommandFilter, systool, root
+aoe-revalidate: CommandFilter, aoe-revalidate, root
+aoe-discover: CommandFilter, aoe-discover, root
+aoe-flush: CommandFilter, aoe-flush, root
+
+# brick/initiator/linuxscsi.py:
+sg_scan: CommandFilter, sg_scan, root
+blockdev: CommandFilter, blockdev, root
+
+# brick/volume/utils.py: utils.temporary_chown(path, 0)
+chown: CommandFilter, chown, root
+
+# brick/utils.py: utils.read_file_as_root()
+cat: CommandFilter, cat, root
