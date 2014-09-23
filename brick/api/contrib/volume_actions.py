@@ -26,9 +26,10 @@ class VolumeActionsController(wsgi.Controller):
     def __init__(self, *args, **kwargs):
         super(VolumeActionsController, self).__init__(*args, **kwargs)
         self.manager = manager.VolumeManager()
+        LOG.warn("VolumeActionsController loaded")
 
     @wsgi.action('os-connector')
-    def _connector(self):
+    def _connector(self, req):
         LOG.debug("os-connector called")
 
         connector = self.manager.get_connector()

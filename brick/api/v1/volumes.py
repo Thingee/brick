@@ -28,10 +28,19 @@ class VolumeController(wsgi.Controller):
     """The Volumes API controller for the OpenStack API."""
 
     def __init__(self):
-        self.manager = manager.VolumeManager()
         super(VolumeController, self).__init__()
+        self.manager = manager.VolumeManager()
 
-    def get_connector(self):
+    def show(self, req, id):
+        return {"show": "bar"}
+
+    def delete(self, req, id):
+        return {"delete": "bar"}
+
+    def index(self, req):
+        return {"index": "bar"}
+
+    def get_connector(self, req):
         LOG.info(_("API get_Connector called"))
         connector = self.manager.get_connector()
         LOG.debug("Connector: %s" % connector)

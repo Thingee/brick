@@ -42,8 +42,7 @@ class FaultWrapper(base_wsgi.Middleware):
             status, webob.exc.HTTPInternalServerError)()
 
     def _error(self, inner, req):
-        if not isinstance(inner, exception.QuotaError):
-            LOG.exception(_("Caught error: %s"), unicode(inner))
+        LOG.exception(_("Caught error: %s"), unicode(inner))
         safe = getattr(inner, 'safe', False)
         headers = getattr(inner, 'headers', None)
         status = getattr(inner, 'code', 500)

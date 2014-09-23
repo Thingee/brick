@@ -425,6 +425,7 @@ class Debug(Middleware):
         for key, value in req.environ.items():
             print(key, '=', value)
         print()
+        LOG.warn("req = %s" % req)
         resp = req.get_response(self.application)
 
         print(('*' * 40) + ' RESPONSE HEADERS')
@@ -485,6 +486,7 @@ class Router(object):
         If no match, return a 404.
 
         """
+        LOG.warn("fuck %s" % self._router)
         return self._router
 
     @staticmethod
@@ -497,8 +499,11 @@ class Router(object):
         or the routed WSGI app's response.
 
         """
+        import pprint
+        LOG.warn("BALLS %s" % pprint.pformat(req.environ['wsgiorg.routing_args']))
         match = req.environ['wsgiorg.routing_args'][1]
         if not match:
+            LOG.warn("bullshit")
             return webob.exc.HTTPNotFound()
         app = match['controller']
         return app

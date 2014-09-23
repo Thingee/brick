@@ -735,8 +735,9 @@ class Resource(wsgi.Application):
         """Registers controller actions with this resource."""
         LOG.debug("controller = %s" % controller)
         actions = getattr(controller, 'wsgi_actions', {})
-        LOG.debug("XXX ACTIONS = %s" % actions)
         for key, method_name in actions.items():
+            LOG.debug("XXX ACTION = %s %s" % (key, method_name))
+            LOG.debug("obj %s" % getattr(controller, method_name))
             self.wsgi_actions[key] = getattr(controller, method_name)
 
     def register_extensions(self, controller):
@@ -768,6 +769,7 @@ class Resource(wsgi.Application):
 
         try:
             args = request_environment['wsgiorg.routing_args'][1].copy()
+            LOG.info("args = %s" % args)
         except (KeyError, IndexError, AttributeError):
             return {}
 
@@ -900,6 +902,8 @@ class Resource(wsgi.Application):
                        content_type, body, accept):
         """Implement the processing stack."""
 
+        LOG.warn("PRocess shit %s" % action)
+
         # Get the implementing method
         try:
             meth, extensions = self.get_method(request, action,
@@ -988,7 +992,7 @@ class Resource(wsgi.Application):
 
     def get_method(self, request, action, content_type, body):
         """Look up the action-specific method and its extensions."""
-        LOG.debug("GET called %s" % action)
+        LOG.debug("GET_METHOD called %s" % action)
         # Look up the method
         try:
             if not self.controller:

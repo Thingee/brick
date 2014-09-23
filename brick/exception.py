@@ -87,6 +87,15 @@ class BrickException(Exception):
         return unicode(self.msg)
 
 
+class NotAuthorized(BrickException):
+    message = _("Not authorized.")
+    code = 403
+
+
+class AdminRequired(NotAuthorized):
+    message = _("User does not have admin privileges")
+
+
 class NotFound(BrickException):
     message = _("Resource could not be found.")
     code = 404
