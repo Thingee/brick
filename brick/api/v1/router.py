@@ -23,6 +23,7 @@ from brick.api import extensions
 import brick.api.openstack
 from brick.api.v1 import limits
 from brick.api.v1 import volumes
+from brick.api.v1 import connector
 from brick.api import versions
 from brick.openstack.common import log as logging
 
@@ -42,9 +43,9 @@ class APIRouter(brick.api.openstack.APIRouter):
 
         mapper.redirect("", "/")
 
-        self.resources['volumes'] = volumes.create_resource()
-        mapper.resource("volume", "volumes",
-                        controller=self.resources['volumes'],
+        self.resources['connector'] = connector.create_resource()
+        mapper.resource("connector", "connector",
+                        controller=self.resources['connector'],
                         collection={'detail': 'GET'},
                         member={'action': 'POST'})
 

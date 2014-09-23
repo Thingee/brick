@@ -107,6 +107,10 @@ class Invalid(BrickException):
     code = 400
 
 
+class InvalidContentType(Invalid):
+    message = _("Invalid content type %(content_type)s")
+
+
 # Cannot be templated as the error syntax varies.
 # msg needs to be constructed when raised.
 class InvalidParameterValue(Invalid):

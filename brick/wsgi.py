@@ -486,7 +486,6 @@ class Router(object):
         If no match, return a 404.
 
         """
-        LOG.warn("fuck %s" % self._router)
         return self._router
 
     @staticmethod
@@ -503,7 +502,7 @@ class Router(object):
         LOG.warn("BALLS %s" % pprint.pformat(req.environ['wsgiorg.routing_args']))
         match = req.environ['wsgiorg.routing_args'][1]
         if not match:
-            LOG.warn("bullshit")
+            LOG.warn("No Match...404")
             return webob.exc.HTTPNotFound()
         app = match['controller']
         return app

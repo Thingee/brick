@@ -733,12 +733,10 @@ class Resource(wsgi.Application):
 
     def register_actions(self, controller):
         """Registers controller actions with this resource."""
-        LOG.debug("controller = %s" % controller)
         actions = getattr(controller, 'wsgi_actions', {})
         for key, method_name in actions.items():
-            LOG.debug("XXX ACTION = %s %s" % (key, method_name))
-            LOG.debug("obj %s" % getattr(controller, method_name))
             self.wsgi_actions[key] = getattr(controller, method_name)
+
 
     def register_extensions(self, controller):
         """Registers controller extensions with this resource."""
@@ -901,8 +899,6 @@ class Resource(wsgi.Application):
     def _process_stack(self, request, action, action_args,
                        content_type, body, accept):
         """Implement the processing stack."""
-
-        LOG.warn("PRocess shit %s" % action)
 
         # Get the implementing method
         try:
