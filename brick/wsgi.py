@@ -498,11 +498,8 @@ class Router(object):
         or the routed WSGI app's response.
 
         """
-        import pprint
-        LOG.warn("BALLS %s" % pprint.pformat(req.environ['wsgiorg.routing_args']))
         match = req.environ['wsgiorg.routing_args'][1]
         if not match:
-            LOG.warn("No Match...404")
             return webob.exc.HTTPNotFound()
         app = match['controller']
         return app

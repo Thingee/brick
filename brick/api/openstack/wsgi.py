@@ -737,7 +737,6 @@ class Resource(wsgi.Application):
         for key, method_name in actions.items():
             self.wsgi_actions[key] = getattr(controller, method_name)
 
-
     def register_extensions(self, controller):
         """Registers controller extensions with this resource."""
 

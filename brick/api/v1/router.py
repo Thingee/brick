@@ -21,9 +21,8 @@ WSGI middleware for OpenStack Volume API.
 
 from brick.api import extensions
 import brick.api.openstack
-from brick.api.v1 import limits
-from brick.api.v1 import volumes
 from brick.api.v1 import connector
+from brick.api.v1 import limits
 from brick.api import versions
 from brick.openstack.common import log as logging
 
