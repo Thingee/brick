@@ -108,6 +108,10 @@ class PasteAppNotFound(NotFound):
     message = _("Could not load paste app '%(name)s' from %(path)s")
 
 
+class ConfigNotFound(NotFound):
+        message = _("Could not find config at %(path)s")
+
+
 class NoFibreChannelHostsFound(BrickException):
     message = _("We are unable to locate any Fibre Channel devices.")
 
